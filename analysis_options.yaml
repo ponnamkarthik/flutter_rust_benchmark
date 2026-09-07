@@ -1,0 +1,13 @@
+analyzer:
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+    - windows/**
+    - linux/**
+    - rust_builder/cargokit/**
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    avoid_print: false

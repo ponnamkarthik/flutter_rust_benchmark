@@ -1,0 +1,15 @@
+[package]
+name = "rust_lib_flutter_rust_benchmark"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "staticlib"]
+
+[dependencies]
+flutter_rust_bridge = "=2.13.0"
+
+# Keep debug launches useful for the interactive demo. Use `flutter run --release`
+# for final benchmark numbers.
+[profile.dev]
+opt-level = 2

@@ -1,0 +1,17 @@
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+build/
+coverage/
+*.iml
+*.lock
+.idea/
+.vscode/
+rust/target/
+lib/src/rust/frb_generated.dart
+lib/src/rust/api/
+rust/src/frb_generated.rs
+rust/src/frb_generated.io.rs
+rust/src/frb_generated.web.rs
