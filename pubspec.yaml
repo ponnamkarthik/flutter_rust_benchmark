@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_rust_bridge: 2.13.0
+  image_picker: ^1.2.3
   rust_lib_flutter_rust_benchmark:
     path: rust_builder
 

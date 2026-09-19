@@ -3,6 +3,8 @@ import 'dart:math' as math;
 import 'dart:ui' as ui;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'image_pipeline_page.dart';
+import 'pixel_pipeline.dart';
 import 'src/rust/api/simple.dart';
 import 'src/rust/frb_generated.dart';
 
@@ -23,18 +25,7 @@ Uint8List _invertInIsolate(Uint8List data) {
 }
 
 Uint8List _processRgbaFrameInIsolate(Uint8List data) {
-  for (var offset = 0; offset + 3 < data.length; offset += 4) {
-    final red = data[offset];
-    final green = data[offset + 1];
-    final blue = data[offset + 2];
-    final luminance = (red * 77 + green * 150 + blue * 29) >> 8;
-
-    data[offset] = 255 - ((red + luminance) ~/ 2);
-    data[offset + 1] = 255 - ((green + luminance) ~/ 2);
-    data[offset + 2] = 255 - ((blue + luminance) ~/ 2);
-    data[offset + 3] = 255;
-  }
-  return data;
+  return processRgbaPixelsInPlace(data);
 }
 
 class BenchmarkApp extends StatelessWidget {
@@ -474,6 +465,18 @@ class _BenchmarkPageState extends State<BenchmarkPage>
             _buildPayloadBadge(),
             const SizedBox(height: 7),
             _buildBuildModeBadge(),
+            const SizedBox(height: 4),
+            IconButton(
+              tooltip: 'Open real image pipeline',
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => const ImagePipelinePage(),
+                  ),
+                );
+              },
+              icon: const Icon(Icons.photo_library_outlined, size: 20),
+            ),
           ],
         ),
       ],

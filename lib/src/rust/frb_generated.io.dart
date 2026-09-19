@@ -215,6 +215,25 @@ class RustLibWire implements BaseWire {
       _wire__crate__api__simple__process_rgba_frame_rust_ownedPtr
           .asFunction<void Function(int, int)>();
 
+  void wire__crate__api__simple__process_rgba_image_rust(
+    int port_,
+    ffi.Pointer<wire_cst_list_prim_u_8_loose> data,
+  ) {
+    return _wire__crate__api__simple__process_rgba_image_rust(port_, data);
+  }
+
+  late final _wire__crate__api__simple__process_rgba_image_rustPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+            ffi.Int64,
+            ffi.Pointer<wire_cst_list_prim_u_8_loose>,
+          )>>(
+    'frbgen_flutter_rust_benchmark_wire__crate__api__simple__process_rgba_image_rust',
+  );
+  late final _wire__crate__api__simple__process_rgba_image_rust =
+      _wire__crate__api__simple__process_rgba_image_rustPtr.asFunction<
+          void Function(int, ffi.Pointer<wire_cst_list_prim_u_8_loose>)>();
+
   ffi.Pointer<wire_cst_list_prim_u_8_loose> cst_new_list_prim_u_8_loose(
     int len,
   ) {

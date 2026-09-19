@@ -14,6 +14,22 @@ pub struct RustOwnedBenchmarkResult {
     pub processing_micros: u32,
 }
 
+fn process_rgba_pixel(pixel: &mut [u8]) {
+    let red = pixel[0] as u32;
+    let green = pixel[1] as u32;
+    let blue = pixel[2] as u32;
+    let luminance = (red * 77 + green * 150 + blue * 29) >> 8;
+
+    let tone_red = 255 - ((red + luminance) >> 1);
+    let tone_green = 255 - ((green + luminance) >> 1);
+    let tone_blue = 255 - ((blue + luminance) >> 1);
+
+    pixel[0] = (((tone_red * 6 + luminance * 2) >> 3) + 10).min(255) as u8;
+    pixel[1] = (((tone_green * 6 + luminance * 2) >> 3) + 4).min(255) as u8;
+    pixel[2] = ((tone_blue * 6 + luminance * 2) >> 3).saturating_sub(6) as u8;
+    pixel[3] = 255;
+}
+
 pub fn process_heavy_data_rust_owned(byte_count: u32) -> RustOwnedBenchmarkResult {
     let mut data = vec![0u8; byte_count as usize];
     let started = Instant::now();
@@ -40,16 +56,7 @@ pub fn process_rgba_frame_rust_owned(byte_count: u32) -> RustOwnedBenchmarkResul
     let mut checksum = 0u32;
 
     for pixel in data.chunks_exact_mut(4) {
-        let red = pixel[0] as u32;
-        let green = pixel[1] as u32;
-        let blue = pixel[2] as u32;
-        let luminance = (red * 77 + green * 150 + blue * 29) >> 8;
-
-        pixel[0] = 255 - ((red + luminance) / 2) as u8;
-        pixel[1] = 255 - ((green + luminance) / 2) as u8;
-        pixel[2] = 255 - ((blue + luminance) / 2) as u8;
-        pixel[3] = 255;
-
+        process_rgba_pixel(pixel);
         checksum = checksum
             .wrapping_add(pixel[0] as u32)
             .wrapping_add(pixel[1] as u32)
@@ -63,4 +70,12 @@ pub fn process_rgba_frame_rust_owned(byte_count: u32) -> RustOwnedBenchmarkResul
         checksum,
         processing_micros: started.elapsed().as_micros().min(u32::MAX as u128) as u32,
     }
+}
+
+/// Process decoded RGBA pixels and return the transformed image bytes.
+pub fn process_rgba_image_rust(mut data: Vec<u8>) -> Vec<u8> {
+    for pixel in data.chunks_exact_mut(4) {
+        process_rgba_pixel(pixel);
+    }
+    data
 }

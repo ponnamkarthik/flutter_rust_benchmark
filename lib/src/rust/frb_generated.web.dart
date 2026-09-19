@@ -138,6 +138,10 @@ class RustLibWire implements BaseWire {
           NativePortType port_, int byte_count) =>
       wasmModule.wire__crate__api__simple__process_rgba_frame_rust_owned(
           port_, byte_count);
+
+  void wire__crate__api__simple__process_rgba_image_rust(
+          NativePortType port_, JSAny data) =>
+      wasmModule.wire__crate__api__simple__process_rgba_image_rust(port_, data);
 }
 
 @JS('wasm_bindgen')
@@ -154,4 +158,7 @@ extension type RustLibWasmModule._(JSObject _) implements JSObject {
 
   external void wire__crate__api__simple__process_rgba_frame_rust_owned(
       NativePortType port_, int byte_count);
+
+  external void wire__crate__api__simple__process_rgba_image_rust(
+      NativePortType port_, JSAny data);
 }
